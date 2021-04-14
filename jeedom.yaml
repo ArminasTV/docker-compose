@@ -1,0 +1,56 @@
+version: '2.4'
+services:
+  mysql:
+    container_name: mariadb
+    image: linuxserver/mariadb:latest
+    restart: unless-stopped
+    expose:
+      - "3306"
+    # ports:
+    #  - "3316:3306"
+    environment:
+      - TZ=Europe/Paris
+      - MYSQL_ROOT_PASSWORD=changeIt
+      - MYSQL_DATABASE=jeedom
+      - MYSQL_USER=jeedom
+      - MYSQL_PASSWORD=changeItToo
+    volumes:
+    #  - ./Docker/allow_root_access.sql:/docker-entrypoint-initdb.d/allow_root_access.sql
+      - ${DIRECTORY}/mariadb:/var/lib/mysql
+
+  web:
+    container_name: jeedom
+    image: edgd1er/jeedom-rpi:v4-latest
+    restart: unless-stopped
+    links:
+      - mysql
+    ports:
+    #  - "9022:22"
+      - "9180:80"
+    #  - "9443:443"
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      #- ${DIRECTORY}/cert.pem:/etc/ssl/certs/ssl-cert-snakeoil.pem:ro
+      #- ${DIRECTORY}/privkey.pem:/etc/ssl/private/ssl-cert-snakeoil.key:ro
+      - ${DIRECTORY}/log:/var/log:rw
+      - ${DIRECTORY}/plugins:/var/www/html/plugins:rw
+      - ${DIRECTORY}/pluglog:/var/www/html/log:rw
+      #- ${DIRECTORY}/backup:/var/www/html/backup:rw
+      #- ${DIRECTORY}/openzwave:/opt:rw
+      - tmpfs_tmp:/tmp/
+      - tmpfs_cache:/var/cache/
+      #- run_vol:/var/run
+      - tmpfs_root_cache:/root/.cache
+    environment:
+      - TZ=Europe/Paris
+      - ROOT_PASSWORD=changeIt
+      - MYSQL_ROOT_PASSWD=changeIt
+      - MYSQL_JEEDOM_HOST=mysql
+      - MYSQL_JEEDOM_PORT=3306
+      - MYSQL_JEEDOM_DBNAME=jeedom
+      - MYSQL_JEEDOM_USERNAME=jeedom
+      - MYSQL_JEEDOM_PASSWD=changeItToo
+    #devices:
+    #  - "/dev/ttyUSB0:/dev/ttyUSB0"
+    #- "/dev/ttyACM0:/dev/ttyACM0"
+    #- "/dev/ttyAMA0:/dev/ttyAMA0"

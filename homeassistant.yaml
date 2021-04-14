@@ -1,0 +1,16 @@
+version: '2.4'
+services:
+  web:
+    container_name: homeassistant
+    image: homeassistant/raspberrypi4-homeassistant:stable
+    volumes:
+      - ${DIRECTORY}/config:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    # network_mode: host
+    ports:
+      - "8123:8123"
+    #devices:
+    #  - "/dev/ttyUSB0:/dev/ttyUSB0"
+    #  - "/dev/ttyACM0:/dev/ttyACM0"
+    #  - "/dev/ttyAMA0:/dev/ttyAMA0"

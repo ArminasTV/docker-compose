@@ -1,0 +1,34 @@
+version: '2.4'
+
+services: 
+  influxdb:
+    container_name: influxdb 
+    image: influxdb:1.8
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    volumes: 
+      - ${DIRECTORY}/influxdb:/var/lib/influxdb
+  web:
+    container_name: grafana 
+    image: grafana/grafana 
+    restart: unless-stopped
+    user: "root"
+    ports:
+      - "3000:3000" 
+    volumes: 
+      - ${DIRECTORY}/grafana:/var/lib/grafana:rw
+    depends_on:
+      - influxdb
+  web1 :
+    container_name: chronograf 
+    image: chronograf 
+    restart: unless-stopped
+    links:
+      - influxdb
+    ports:
+      - "8888:8888" 
+    volumes: 
+      - ${DIRECTORY}/chronograf:/var/lib/chronograf
+    depends_on:
+      - influxdb
