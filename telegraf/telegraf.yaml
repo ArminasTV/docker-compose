@@ -1,0 +1,19 @@
+version: "2"
+services:
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: always
+    environment: 
+      HOST_PROC: /rootfs/proc
+      HOST_SYS: /rootfs/sys
+      HOST_ETC: /rootfs/etc
+      HOST_VAR: /rootfs/var
+      HOST_MOUNT_PREFIX: /hostfs
+      LD_LIBRARY_PATH: /opt/vc/lib
+    volumes:
+     - /home/pi/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+     - /opt/vc:/opt/vc:ro
+     - /:/rootfs:ro
+     #- /var/run/docker.sock:/var/run/docker.sock
+    network_mode: "host" # Déconseillé, spécifier IP dans le fichier telegraf.conf
