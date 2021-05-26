@@ -13,7 +13,9 @@ services:
     container_name: grafana 
     image: grafana/grafana 
     restart: unless-stopped
-    user: "root"
+    user: "root"    
+    links:
+      - influxdb
     ports:
       - "3000:3000" 
     volumes: 
