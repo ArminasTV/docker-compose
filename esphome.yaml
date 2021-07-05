@@ -1,0 +1,10 @@
+version: '2.4'
+services:
+  web:
+    container_name: esphome
+    image: esphome/esphome
+    volumes:
+      - ${DIRECTORY}/config:/config 
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    network_mode: host
