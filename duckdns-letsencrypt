@@ -1,0 +1,15 @@
+version: '2.4'
+services:
+  web:
+    container_name: duckdns-cert
+    image: aazario/duckdns-letsencrypt
+    volumes:
+      - /home/pi/homeassistant/ssl:/etc/letsencrypt
+    environment: 
+      - DUCKDNS_TOKEN=ae0a5302-56e4-417d-8ec9-a6be38013c66
+      - DUCKDNS_DOMAIN=arminastv.duckdns.org
+      - LETSENCRYPT_WILDCARD=false
+      - ESTING=false
+      - UID=1000
+      - GID=1000
+    restart: unless-stopped
