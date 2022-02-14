@@ -3,7 +3,7 @@ version: '2.4'
 services:
   app:
     container_name: openhab
-    image: openhab/openhab:3.0.1
+    image: openhab/openhab:3.2.0
     restart: unless-stopped
     # Pour faire fonctionner le UpNP discovery, si décommenté alors les ports sont à supprimer
     # network_mode: host
