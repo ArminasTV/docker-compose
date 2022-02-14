@@ -9,11 +9,14 @@ services:
       HOST_SYS: /rootfs/sys
       HOST_ETC: /rootfs/etc
       HOST_VAR: /rootfs/var
-      HOST_MOUNT_PREFIX: /hostfs
+      HOST_MOUNT_PREFIX: /rootfs
       LD_LIBRARY_PATH: /opt/vc/lib
     volumes:
-     - /home/pi/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+     - /home/pi/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
      - /opt/vc:/opt/vc:ro
-     - /:/rootfs:ro
+     - /:/rootfs/:ro
+     - /sys:/rootfs/sys:ro
+     - /proc:/rootfs/proc:ro
+     - /etc:/rootfs/etc:ro
      #- /var/run/docker.sock:/var/run/docker.sock
     network_mode: "host" # Déconseillé, spécifier IP dans le fichier telegraf.conf
